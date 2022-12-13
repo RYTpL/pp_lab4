@@ -51,3 +51,49 @@ def mark_filter(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
 def parametrs_filter(df: pd.DataFrame, class_mark: int, max_width: int, max_height: int) -> pd.DataFrame:
     '''select all images with mark, width and height < max_width and max_height and return only it'''
     return df[(df.mark == class_mark) & (df.height <= max_height) & (df.width <= max_width)]
+
+
+def group_mp(df: pd.DataFrame, class_mark: int) -> None:
+    '''groop dataframe by new column (number of pixels) and shows information about that'''
+    df = mark_filter(df, class_mark)
+    img_pixels = []
+    for item in df['AbsolutePath']:
+        img = cv2.imread(item)
+        img_pixels.append(img.size)
+    df['pixels'] = img_pixels
+    df.groupby('pixels').count()
+    print(df.pixels.describe())
+
+
+def create_histogram(df: pd.DataFrame, class_mark: int) -> list:
+    '''create histogram'''
+    df = mark_filter(df, class_mark)
+    df = df.sample()
+    for item in df['AbsolutePath']:
+        path = item
+    image = cv2.imread(path)
+    array = []
+    for number in range(0, 3):
+        histograma = cv2.calcHist([image], [number], None, [256], [0, 256])
+        array.append(histograma)
+    return array
+
+
+def histogram_rendering(df: pd.DataFrame, class_mark: int) -> None:
+    '''draw histogram'''
+    histograma = create_histogram(df, class_mark)
+    plt.plot(histograma[0], color='b')
+    plt.plot(histograma[1], color='g')
+    plt.plot(histograma[2], color='r')
+    plt.title('Image Histogram For Blue, Green, Red Channels')
+    plt.xlabel("Intensity")
+    plt.ylabel("Number of pixels")
+    plt.show()
+
+
+if __name__ == '__main__':
+    df = createDataFrame()
+    add_mark(df)
+    add_parametrs(df)
+    group_mp(df, 1)
+    histogram_rendering(df, 1)
