@@ -43,3 +43,13 @@ def add_parametrs(df: pd.DataFrame) -> None:
     df['channel'] = imagechannel
 
 
+def mark_filter(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
+    '''This function selects all images with mark and returns them'''
+    return df[df['mark'] == class_mark]
+
+
+def parametrs_filter(df: pd.DataFrame, class_mark: int, max_width: int, max_height: int) -> pd.DataFrame:
+    '''This function selects all images with width and height less given and the same mark and returns them'''
+    return df[(df.mark == class_mark) & (df.height <= max_height) & (df.width <= max_width)]
+
+
