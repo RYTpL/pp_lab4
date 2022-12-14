@@ -1,16 +1,16 @@
 import pandas as pd
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import os
 
 
-def createDataFrame()->pd.DataFrame:
+def createDataFrame() -> pd.DataFrame:
     '''Take data from 2 csv into lab2 and create dataframe'''
-    annotation1 = pd.read_csv(os.path.join("D:\\","PP_lab2","PP_lab2","annotation1.csv"), sep=' ',
-                      header=None, encoding='UTF-16')
-    annotation2 = pd.read_csv(os.path.join("D:\\","PP_lab2","PP_lab2","annotation2.csv"), sep=' ',
-                      header=None, encoding='UTF-16')
+    annotation1 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation1.csv"), sep=' ',
+                              header=None, encoding='UTF-16')
+    annotation2 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation2.csv"), sep=' ',
+                              header=None, encoding='UTF-16')
     df = pd.concat([annotation1, annotation2], ignore_index=True)
     df.drop(1, axis=1, inplace=True)
     df.rename(columns={0: 'AbsolutePath', 2: 'DatasetClass'}, inplace=True)
