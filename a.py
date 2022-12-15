@@ -7,13 +7,14 @@ import os
 
 def createDataFrame() -> pd.DataFrame:
     '''Take data from 2 csv into lab2 and create dataframe'''
-    annotation1 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation1.csv"), sep=' ',
-                              header=None, encoding='UTF-16')
+    annotation1 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation1.csv"), sep=',',
+                              header=None, encoding='UTF-8')
     annotation2 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation2.csv"), sep=' ',
-                              header=None, encoding='UTF-16')
+                              header=None, encoding='UTF-8')
     df = pd.concat([annotation1, annotation2], ignore_index=True)
-    df.drop(1, axis=1, inplace=True)
-    df.rename(columns={0: 'AbsolutePath', 2: 'DatasetClass'}, inplace=True)
+    #print(df)
+    #df.drop(1, axis=1, inplace=True)
+    df.rename(columns={0: 'AbsolutePath', 1: 'DatasetClass'}, inplace=True)
     return df
 
 
@@ -93,7 +94,8 @@ def histogram_rendering(df: pd.DataFrame, class_mark: int) -> None:
 
 if __name__ == '__main__':
     df = createDataFrame()
-    add_mark(df)
-    add_parametrs(df)
-    group_mp(df, 1)
-    histogram_rendering(df, 1)
+    print(df)
+    #add_mark(df)
+    #add_parametrs(df)
+    #roup_mp(df, 1)
+    #histogram_rendering(df, 1)
