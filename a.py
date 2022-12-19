@@ -1,8 +1,9 @@
+import os
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-import os
 
 
 def createDataFrame() -> pd.DataFrame:
@@ -12,16 +13,14 @@ def createDataFrame() -> pd.DataFrame:
     annotation2 = pd.read_csv(os.path.join("D:\\", "PP_lab2", "PP_lab2", "annotation2.csv"), sep=' ',
                               header=None, encoding='UTF-8')
     df = pd.concat([annotation1, annotation2], ignore_index=True)
-    #print(df)
-    #df.drop(1, axis=1, inplace=True)
-    df.rename(columns={0: 'AbsolutePath', 1: 'DatasetClass'}, inplace=True)
+    df.rename(columns={0: 'absolute_path', 1: 'dataset_class'}, inplace=True)
     return df
 
 
 def add_mark(df: pd.DataFrame) -> None:
     '''add column with mark of image, 0 if bayhorse, 1 if zebra'''
     index = []
-    for item in df['DatasetClass']:
+    for item in df['dataset_class']:
         if item == 'bayhorse':
             index.append(0)
         else:
@@ -34,7 +33,7 @@ def add_parametrs(df: pd.DataFrame) -> None:
     imagewidth = []
     imageheight = []
     imagechannel = []
-    for item in df['AbsolutePath']:
+    for item in df['absolute_path']:
         img = cv2.imread(item)
         imageheight.append(img.shape[0])
         imagewidth.append(img.shape[1])
@@ -58,7 +57,7 @@ def group_mp(df: pd.DataFrame, class_mark: int) -> None:
     '''groop dataframe by new column (number of pixels) and shows information about that'''
     df = mark_filter(df, class_mark)
     img_pixels = []
-    for item in df['AbsolutePath']:
+    for item in df['absolute_path']:
         img = cv2.imread(item)
         img_pixels.append(img.size)
     df['pixels'] = img_pixels
@@ -70,7 +69,7 @@ def create_histogram(df: pd.DataFrame, class_mark: int) -> list:
     '''create histogram'''
     df = mark_filter(df, class_mark)
     df = df.sample()
-    for item in df['AbsolutePath']:
+    for item in df['absolute_path']:
         path = item
     image = cv2.imread(path)
     array = []
@@ -95,7 +94,7 @@ def histogram_rendering(df: pd.DataFrame, class_mark: int) -> None:
 if __name__ == '__main__':
     df = createDataFrame()
     print(df)
-    #add_mark(df)
-    #add_parametrs(df)
+    # add_mark(df)
+    # add_parametrs(df)
     #roup_mp(df, 1)
     #histogram_rendering(df, 1)
